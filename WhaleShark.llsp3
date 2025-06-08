@@ -76,6 +76,15 @@ def do_init():
         if i >= 100:
             break
 
+# def follow_for_distance(initial_position=0,
+#                        distance_to_cover=0):
+#    current_position = abs(motor.relative_position(port.B))
+#    distance_covered = current_position - initial_position
+#    if distance_covered < 0 : distance_covered = distance_covered * -1
+#    if (distance_covered >= abs(distance_to_cover)):
+#        return False
+#    else:
+#        return True
 
 # Return true if LEFT button is pressed
 def is_left_button_pressed():
@@ -95,6 +104,8 @@ def degrees_for_distance(distance_cm):
     return int((distance_cm/WHEEL_CIRCUMFERENCE) * 360)
 
 
+
+
 def wait_for_yaw_abs(angle=0):
     abs_angle = abs(angle)
     abs_current_yaw = abs(get_yaw_value())
@@ -107,10 +118,10 @@ def wait_for_yaw_abs(angle=0):
             while get_yaw_value() <= angle: time.sleep_ms(10)
     elif abs_current_yaw > abs_angle:
         while abs(get_yaw_value()) >= abs_angle:
-             print("current yaw:"+str(get_yaw_value()))
-             time.sleep_ms(10)
+            print("current yaw:"+str(get_yaw_value()))
+            time.sleep_ms(10)
     elif abs_current_yaw < abs_angle:
-        while abs(get_yaw_value()) <= abs_angle: 
+        while abs(get_yaw_value()) <= abs_angle:
             print("current yaw:"+str(get_yaw_value()))
             time.sleep_ms(10)
 
@@ -124,7 +135,7 @@ async def follow_gyro_angle(kp,
                             follow_for,
                             acceleration=2000,
                             deceleration=2000,
-                             **kwargs):
+                            **kwargs):
     # get initial reading from left motor
     integral = 0.0
     last_error = 0.0
@@ -161,16 +172,16 @@ def get_yaw_angle():
     return current_yaw
 
 # async def turnRight(angle):
-#     motor_pair.move_tank(motor_pair.PAIR_1, 200, -200)
-#     while abs(get_yaw_angle()) <= angle: time.sleep_ms(10)
-#     motor_pair.stop(motor_pair.PAIR_1, stop=motor.HOLD)
+#    motor_pair.move_tank(motor_pair.PAIR_1, 200, -200)
+#    while abs(get_yaw_angle()) <= angle: time.sleep_ms(10)
+#    motor_pair.stop(motor_pair.PAIR_1, stop=motor.HOLD)
 
 async def turnRight(angle):
     motor_pair.move_tank(motor_pair.PAIR_1, 200, -200)
-    while abs(get_yaw_angle()) <= angle: 
+    while abs(get_yaw_angle()) <= angle:
         print ("Yaw:"+str(abs(get_yaw_angle())))
         time.sleep_ms(10)
-    
+
     motor_pair.stop(motor_pair.PAIR_1, stop=motor.HOLD)
     print("Motor Pair Stopped")
 
@@ -191,38 +202,38 @@ async def run1(): # Lift the Mast
     await go_forward_no_wait(in_distance=-640,in_speed=900,in_accel=4000,kp=1.4,ki=0,kd=0,target_angle=0)#go forward for mast
     await turn_to_angle_no_wait(in_left_speed=0,in_right_speed=-300,in_angle=85,in_accel=900,in_stop=True)#turn towards mast
     await go_forward_no_wait(in_distance=-330,in_speed=300,in_accel=1000,kp=1.4,ki=0,kd=0,target_angle=90)#go forward to lift mast
-    await go_forward_no_wait(in_distance=200,in_speed=300,in_accel=1000,kp=1.4,ki=0,kd=0,target_angle=90) # Move back to clear 
+    await go_forward_no_wait(in_distance=200,in_speed=300,in_accel=1000,kp=1.4,ki=0,kd=0,target_angle=90) # Move back to clear
     await turn_to_angle_no_wait(in_left_speed=-300,in_right_speed=0,in_angle=30,in_accel=900,in_stop=True) # turn to Red Base
     await go_forward_no_wait(in_distance=1200,in_speed=900,in_accel=11000,kp=1.4,ki=0,kd=0,target_angle=30)#go to Red Base
 
 # # await motor.run_for_degrees (port.A ,-170,500, stop=motor.BRAKE, acceleration=600, deceleration=600)#reset attachment
-#     await turn_to_angle_no_wait(37, 500, 500)# Turn towards angler fish
+#    await turn_to_angle_no_wait(37, 500, 500)# Turn towards angler fish
 # # await go_straight(-2000,1050,4000) #go forward
-#     await go_forward_no_wait(-2000,1050,4000)#go forward to angler fish
+#    await go_forward_no_wait(-2000,1050,4000)#go forward to angler fish
 # #motor_pair.stop(motor_pair.PAIR_1)
-#     await turn_to_angle_no_wait (-65,300,500*3) # activate angler fish
-#     #await go_straight (60,1050,500*5)
-#     await go_forward_no_wait(60,1050,500*2)
+#    await turn_to_angle_no_wait (-65,300,500*3) # activate angler fish
+#    #await go_straight (60,1050,500*5)
+#    await go_forward_no_wait(60,1050,500*2)
 # # await go_straight (-60,1050,500*5)
-#     await go_forward_no_wait(-60,1050,500*2)
-#     await turn_to_angle_no_wait (29,100,250*4) # turn back towards sample
+#    await go_forward_no_wait(-60,1050,500*2)
+#    await turn_to_angle_no_wait (29,100,250*4) # turn back towards sample
 # # await go_straight(-310,800,400*2) # go to sample
-#     await go_forward_no_wait(-240,800,300)# go to sample
-#     await motor.run_for_degrees (port.A, 150,300) #pick up sample
-#     #await go_straight (240,800,500*2) #back up from sample
-#     await go_forward_no_wait(240,800,500*2)# back up from sample
+#    await go_forward_no_wait(-240,800,300)# go to sample
+#    await motor.run_for_degrees (port.A, 150,300) #pick up sample
+#    #await go_straight (240,800,500*2) #back up from sample
+#    await go_forward_no_wait(240,800,500*2)# back up from sample
 
-#     await motor.run_for_degrees (port.A, -180,500) #drop the sample on the floor
-#     await turn_to_angle_no_wait (-2,200,350*4) #turn to the submersible
+#    await motor.run_for_degrees (port.A, -180,500) #drop the sample on the floor
+#    await turn_to_angle_no_wait (-2,200,350*4) #turn to the submersible
 
-#     #await go_straight (-250,350,350*4) #go forward to submersible
-#     await go_forward_no_wait(-265,350,350*4)#go forward to submersible
-#     await motor.run_for_degrees (port.A,150,200*3) #go and do submersible with the arm
+#    #await go_straight (-250,350,350*4) #go forward to submersible
+#    await go_forward_no_wait(-265,350,350*4)#go forward to submersible
+#    await motor.run_for_degrees (port.A,150,200*3) #go and do submersible with the arm
 # # await go_straight (150,400,400*3) #back up from submersible
-#     await go_forward_no_wait(150,400,400*3)
-#     await turn_to_angle_no_wait (-60,200,200*2) #turn back towards octopus circle
-#     #await go_straight (-400,700,700*4) #back up into octopus circle
-#     await go_forward_no_wait(-375,700,700*4) # move to octopus drop zone
+#    await go_forward_no_wait(150,400,400*3)
+#    await turn_to_angle_no_wait (-60,200,200*2) #turn back towards octopus circle
+#    #await go_straight (-400,700,700*4) #back up into octopus circle
+#    await go_forward_no_wait(-375,700,700*4) # move to octopus drop zone
 
 
 # run 2 program
@@ -230,36 +241,36 @@ async def run2():
     motion_sensor.reset_yaw(0)
 
     # go backward to get out of base
-#     motor.reset_relative_position(port.B, 0)
-#     initial_position = abs(motor.relative_position(port.B))
-#     await follow_gyro_angle(kp=1.45, ki=0, kd=0, speed=-500, target_angle=0, sleep_time=0, follow_for=follow_for_distance,
-#             initial_position=initial_position, distance_to_cover=500) #degrees_for_distance(20)))
+#    motor.reset_relative_position(port.B, 0)
+#    initial_position = abs(motor.relative_position(port.B))
+#    await follow_gyro_angle(kp=1.45, ki=0, kd=0, speed=-500, target_angle=0, sleep_time=0, follow_for=follow_for_distance,
+#            initial_position=initial_position, distance_to_cover=500) #degrees_for_distance(20)))
 
-#     motor.reset_relative_position(port.B, 0)
-#     initial_position = abs(motor.relative_position(port.B))
+#    motor.reset_relative_position(port.B, 0)
+#    initial_position = abs(motor.relative_position(port.B))
 # # await turnRight(45)
-#     await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=90, stop=True)
+#    await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=90, stop=True)
 
-#     motor.reset_relative_position(port.B, 0)
-#     initial_position = abs(motor.relative_position(port.B))
-#     await follow_gyro_angle(kp=1, ki=0, kd=0, speed=-500, target_angle=90, sleep_time=0, follow_for=follow_for_distance,
-#             initial_position=initial_position, distance_to_cover=250) #degrees_for_distance(20)))
+#    motor.reset_relative_position(port.B, 0)
+#    initial_position = abs(motor.relative_position(port.B))
+#    await follow_gyro_angle(kp=1, ki=0, kd=0, speed=-500, target_angle=90, sleep_time=0, follow_for=follow_for_distance,
+#            initial_position=initial_position, distance_to_cover=250) #degrees_for_distance(20)))
 #    # motor.reset_relative_position(port.B, 0)
-#     #initial_position = abs(motor.relative_position(port.B))
+#    #initial_position = abs(motor.relative_position(port.B))
 # # await turnRight(45)
-#     await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=179, stop=True)
+#    await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=179, stop=True)
 
-#     motor.reset_relative_position(port.B, 0)
-#     initial_position = abs(motor.relative_position(port.B))
-#     await follow_gyro_angle(kp=1, ki=0, kd=0, speed=-500, target_angle=179, sleep_time=0, follow_for=follow_for_distance,
-#             initial_position=initial_position, distance_to_cover=100) #degrees_for_distance(20)))
+#    motor.reset_relative_position(port.B, 0)
+#    initial_position = abs(motor.relative_position(port.B))
+#    await follow_gyro_angle(kp=1, ki=0, kd=0, speed=-500, target_angle=179, sleep_time=0, follow_for=follow_for_distance,
+#            initial_position=initial_position, distance_to_cover=100) #degrees_for_distance(20)))
 
-#     await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=269, stop=True)
+#    await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=269, stop=True)
 
-#     motor.reset_relative_position(port.B, 0)
-#     initial_position = abs(motor.relative_position(port.B))
-#     await follow_gyro_angle(kp=1, ki=0, kd=0, speed=-500, target_angle=269, sleep_time=0, follow_for=follow_for_distance,
-#             initial_position=initial_position, distance_to_cover=100) #degrees_for_distance(20)))
+#    motor.reset_relative_position(port.B, 0)
+#    initial_position = abs(motor.relative_position(port.B))
+#    await follow_gyro_angle(kp=1, ki=0, kd=0, speed=-500, target_angle=269, sleep_time=0, follow_for=follow_for_distance,
+#            initial_position=initial_position, distance_to_cover=100) #degrees_for_distance(20)))
 
 
 # run 1 program
@@ -274,9 +285,9 @@ async def run3():
 
     motor.reset_relative_position(port.B, 0)
     initial_position = abs(motor.relative_position(port.B))
-   # await turnRight(45)
+# await turnRight(45)
     await pivot_gyro_turn_abs(left_speed=125, right_speed=-125, angle=90, stop=True)
-    
+
     motor.reset_relative_position(port.B, 0)
     initial_position = abs(motor.relative_position(port.B))
     await follow_gyro_angle(kp=1.45, ki=0, kd=0, speed=-500, target_angle=90, sleep_time=0, follow_for=follow_for_distance,
@@ -298,8 +309,8 @@ async def run3():
             initial_position=initial_position, distance_to_cover=(400)) #degrees_for_distance(20)))
     motor_pair.stop(motor_pair.PAIR_1)
 
-   # await pivot_gyro_turn_abs(left_speed=-200, right_speed=200, angle=-45, stop=True)
-   # motor.reset_relative_position(port.B, 0)
+# await pivot_gyro_turn_abs(left_speed=-200, right_speed=200, angle=-45, stop=True)
+# motor.reset_relative_position(port.B, 0)
     #initial_position = abs(motor.relative_position(port.B))
 
     print("Program ended")
@@ -322,9 +333,20 @@ async def run3():
     # await motor_pair.move_tank_for_degrees (motor_pair.PAIR_1, 700,400,800, stop=motor.BRAKE, acceleration=4000, deceleration=4000)
     # await motor_pair.move_tank_for_degrees (motor_pair.PAIR_1, 700,2000,2000, stop=motor.BRAKE, acceleration=4000, deceleration=4000)
 
- 
+
 # END RUN 1
 #----------------------------------------
+
+
+async def run5(): # Collecting on Blue Side, Shipping Lanes
+    motion_sensor.reset_yaw(0)
+    # await go_forward_no_wait(in_distance=-640,in_speed=900,in_accel=4000,kp=1.4,ki=0,kd=0,target_angle=0)#go forward for mast
+    # await turn_to_angle_no_wait(in_left_speed=0,in_right_speed=-300,in_angle=85,in_accel=900,in_stop=True)#turn towards mast
+    # await go_forward_no_wait(in_distance=-330,in_speed=300,in_accel=1000,kp=1.4,ki=0,kd=0,target_angle=90)#go forward to lift mast
+    # await go_forward_no_wait(in_distance=200,in_speed=300,in_accel=1000,kp=1.4,ki=0,kd=0,target_angle=90) # Move back to clear
+    # await turn_to_angle_no_wait(in_left_speed=-300,in_right_speed=0,in_angle=30,in_accel=900,in_stop=True) # turn to Red Base
+    # await go_forward_no_wait(in_distance=1200,in_speed=900,in_accel=11000,kp=1.4,ki=0,kd=0,target_angle=30)#go to Red Base
+
 
 
 # MAIN EXECUTE FUNCTION
@@ -346,9 +368,9 @@ async def execute(run_numbers=None):
     run_functions_map = {
                             1: run1, # or run1a
                             2: run2,
-                       #     3: run3,
+                    #    3: run3,
                         #    4: run4,
-                         #   5: run5
+                        #5: run5
                         }
     print("Start - Execute")
 
@@ -416,7 +438,7 @@ async def execute(run_numbers=None):
 
 # SLOT 0 - All Runs#
 #runloop.run(execute([1, 2, 3, 4, 5]))
-runloop.run(execute([  1,2, 3, 4, 5]))
+runloop.run(execute([1,2, 3, 4, 5]))
 
 # SLOT 1 - Run 2 Onwards
 #runloop.run(execute([2, 3, 4, 5]))
